@@ -11,4 +11,9 @@ public class Concert extends Event {
         this.performers = performers;
     }
 
+    Concert()
+    {
+        performers = new ArrayList();
+    }
+
 }

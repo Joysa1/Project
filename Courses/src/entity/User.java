@@ -1,5 +1,8 @@
 package entity;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class User {
    private String username;
     private  String password;
@@ -8,6 +11,22 @@ public class User {
     private  String surname;
     private  String lastname;
     private  int age;
+    private String number;
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        String regex = "(80|\\+375)[\\s|-]?(29|33|44|25)[\\s|-]?(\\d{7}|\\d{3})";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(number);
+
+        if(!m.find()) {
+            throw new IllegalArgumentException();
+       }
+        this.number = m.group();
+    }
 
     public void setUsername(String username) {
         this.username = username;
