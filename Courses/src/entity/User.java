@@ -1,5 +1,6 @@
 package entity;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,6 +16,39 @@ public class User {
 
     public String getNumber() {
         return number;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return admin == user.admin &&
+                age == user.age &&
+                Objects.equals(username, user.username) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(name, user.name) &&
+                Objects.equals(surname, user.surname) &&
+                Objects.equals(lastname, user.lastname) &&
+                Objects.equals(number, user.number);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, admin, name, surname, lastname, age, number);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", admin=" + admin +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", age=" + age +
+                ", number='" + number + '\'' +
+                '}';
     }
 
     public void setNumber(String number) {
