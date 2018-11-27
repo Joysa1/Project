@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<GridPane alignment="center" hgap="10" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: #2E3348;" vgap="10" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.MenuController">
+    <columnConstraints>
+        <ColumnConstraints />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints />
+    </rowConstraints>
+    <children>
+        <AnchorPane prefHeight="281.0" prefWidth="281.0">
+            <children>
+                <AnchorPane layoutX="-1.0" layoutY="103.0" prefHeight="300.0" prefWidth="700.0" style="-fx-background-color: #fafafa;">
+               <children>
+                  <ImageView fx:id="exit" layoutX="431.0" layoutY="127.0">
+                     <image>
+                        <Image url="@../assets/exit.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="database" layoutX="318.0" layoutY="39.0">
+                     <image>
+                        <Image url="@../assets/database.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="newpremiya" layoutX="189.0" layoutY="39.0">
+                     <image>
+                        <Image url="@../assets/piggy-bank.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="analyze" layoutX="439.0" layoutY="39.0">
+                     <image>
+                        <Image url="@../assets/strategy.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="aboutcompany" layoutX="189.0" layoutY="141.0">
+                     <image>
+                        <Image url="@../assets/brand.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="faq" layoutX="318.0" layoutY="141.0">
+                     <image>
+                        <Image url="@../assets/question.png" />
+                     </image>
+                  </ImageView>
+               </children>
+                </AnchorPane>
+            <Label layoutX="285.0" layoutY="23.0" text="Меню" textFill="WHITE">
+               <font>
+                  <Font name="Bookman Old Style" size="43.0" />
+               </font>
+            </Label>
+            </children>
+        </AnchorPane>
+    </children>
+</GridPane>
