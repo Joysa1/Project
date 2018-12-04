@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import entity.AutorizationData;
-public class Client {
+public class Client implements Cloneable {
     Socket socket;
     ObjectOutputStream oos;
     ObjectInputStream ois;

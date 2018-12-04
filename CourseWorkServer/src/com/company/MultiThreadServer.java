@@ -1,11 +1,11 @@
 package com.company;
 
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Date;
+import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.lang.ClassNotFoundException;
@@ -20,7 +20,26 @@ public class MultiThreadServer {
     public static void main(String[] args) {
 
         // стартуем сервер на порту 3345 и инициализируем переменную для обработки консольных команд с самого сервера
-        try (ServerSocket server = new ServerSocket(3345);
+        FileInputStream fis;
+        Properties properties = new Properties();
+        int thisport = 0;
+        File file = new File("stats.txt");
+        try {
+            fis = new FileInputStream("C:\\Users\\Sten\\IdeaProjects\\CourseWorkServer\\src\\resources.properties");
+            properties.load(fis);
+            String port = properties.getProperty("port");
+            thisport = Integer.parseInt(port);
+            // Создание файла
+            file.createNewFile();
+            // Создание объекта FileWriter
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try (ServerSocket server = new ServerSocket(thisport);
              BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
             System.out.println("Server socket created, command console reader for listen to server commands");
 
@@ -56,6 +75,12 @@ public class MultiThreadServer {
                 // продолжает общение от лица сервера
                 executeIt.execute(new MonoThreadClientHandler(client));
                 System.out.print("Connection accepted.");
+
+                String lineSeparator = System.getProperty("line.separator");
+                Date date = new Date();
+                FileWriter writer = new FileWriter(file);
+                writer.write(date +" "+client.getInetAddress().toString()+":"+ client.getPort() +lineSeparator);
+                writer.flush();
             }
 
             // закрытие пула нитей после завершения работы всех нитей

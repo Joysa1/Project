@@ -8,12 +8,9 @@ package com.company;
 
 import entity.*;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import javax.xml.crypto.Data;
+import java.io.*;
 import java.net.Socket;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.lang.ClassNotFoundException;
 
 
@@ -50,13 +47,36 @@ public class MonoThreadClientHandler implements Runnable {
     public void run() {
 
         try {
-            // инициируем каналы общения в сокете, для сервера
+            File file = new File("otchet.txt");
 
-            // канал записи в сокет следует инициализировать сначала канал чтения для избежания блокировки выполнения программы на ожидании заголовка в сокете
-            //     DataOutputStream out = new DataOutputStream(clientDialog.getOutputStream());
+            // Создание файла
+            file.createNewFile();
+            // Создание объекта FileWriter
+            FileWriter writer = new FileWriter(file);
+            String lineSeparator = System.getProperty("line.separator");
+            DataBaseHandler database = new DataBaseHandler();
+            writer.write("Фамилия" +" " + "Дата" +" " + "Сумма" +lineSeparator);
+            // запись всей строки
+            ListOfPerson list = new ListOfPerson();
+            list.setListOfPerson(database.SelectPersons());
 
-// канал чтения из сокета
-            //     DataInputStream in = new DataInputStream(clientDialog.getInputStream());
+            ListOfPremiya listOfPremiya = new ListOfPremiya();
+            listOfPremiya.setListOfPremiya(database.SelectPremii());
+            for (int i = 0; i < listOfPremiya.getListOfPremiya().size(); i++) {
+                PersonForTable newperson = new PersonForTable();
+                for(int j=0; j<list.getListOfPerson().size(); j++) {
+
+                    if(listOfPremiya.getListOfPremiya().get(i).getIdemployee().equals(list.getListOfPerson().get(j).getIdperson())) {
+                        newperson.setSurname(list.getListOfPerson().get(j).getSurname());
+                        break;
+                    }
+                }
+                newperson.setDate(listOfPremiya.getListOfPremiya().get(i).getDate());
+                newperson.setSum(listOfPremiya.getListOfPremiya().get(i).getSum());
+
+                writer.write(newperson.getSurname() +" " + newperson.getDate() +" " + newperson.getSum() +lineSeparator);
+                writer.flush();
+            }
             ObjectInputStream in = new ObjectInputStream(clientDialog.getInputStream());
             System.out.println("DataInputStream created");
             ObjectOutputStream out = new ObjectOutputStream(clientDialog.getOutputStream());
@@ -111,9 +131,9 @@ public class MonoThreadClientHandler implements Runnable {
                 }
                 if(object instanceof ListOfPremiya)
                 {
-                    ListOfPremiya listOfPremiya = (ListOfPremiya) object;
-                    listOfPremiya.setListOfPremiya(dataBaseHandler.SelectPremii());
-                    out.writeObject(listOfPremiya);
+                    ListOfPremiya listOfPremiya2 = (ListOfPremiya) object;
+                    listOfPremiya2.setListOfPremiya(dataBaseHandler.SelectPremii());
+                    out.writeObject(listOfPremiya2);
                     System.out.println("Отправлен список премий");
                 }
                 System.out.println("Server try writing to channel");

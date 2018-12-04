@@ -1,13 +1,20 @@
 package Controllers;
 
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import entity.ListOfPerson;
+import entity.ListOfPremiya;
+import entity.PersonForTable;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import sample.Client;
@@ -108,7 +115,49 @@ public class MenuController {
         });
         aboutcompany.setOnMouseClicked(event ->
         {
-            System.out.println("вы нажали о компании");
+            try
+            {
+                File file = new File("otchet.txt");
+
+                // Создание файла
+                file.createNewFile();
+                // Создание объекта FileWriter
+                FileWriter writer = new FileWriter(file);
+                String lineSeparator = System.getProperty("line.separator");
+                writer.write("Фамилия" +" " + "Дата" +" " + "Сумма" +lineSeparator);
+                // запись всей строки
+                ListOfPerson list = new ListOfPerson();
+                client.write(list);
+                list = (ListOfPerson) client.read();
+                ListOfPremiya listOfPremiya = new ListOfPremiya();
+                client.write(listOfPremiya);
+                listOfPremiya = (ListOfPremiya) client.read();
+                for (int i = 0; i < listOfPremiya.getListOfPremiya().size(); i++) {
+                    PersonForTable newperson = new PersonForTable();
+                    for(int j=0; j<list.getListOfPerson().size(); j++) {
+
+                        if(listOfPremiya.getListOfPremiya().get(i).getIdemployee().equals(list.getListOfPerson().get(j).getIdperson())) {
+                            newperson.setSurname(list.getListOfPerson().get(j).getSurname());
+                            break;
+                        }
+                    }
+                    newperson.setDate(listOfPremiya.getListOfPremiya().get(i).getDate());
+                    newperson.setSum(listOfPremiya.getListOfPremiya().get(i).getSum());
+
+                    writer.write(newperson.getSurname() +" " + newperson.getDate() +" " + newperson.getSum() +lineSeparator);
+                    writer.flush();
+                }
+            }
+            catch(IOException ex){
+
+                System.out.println(ex.getMessage());
+            }
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
+            alert.setTitle("Отчёт!");
+            alert.setHeaderText(null);
+            alert.setContentText("Отчёт успешно создан!");
+            alert.showAndWait();
         });
         faq.setOnMouseClicked(event ->
         {
